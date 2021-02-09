@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*-
+#twitter.com/pijawca
+import keyboard as kb
+
+from aiogram import types
+from bot import dp
+from handlers.scripts.news import time, temp, liquid, state, nt_t, nt_l, nt_t1, nt_t2, nt_t3, nt_t4, nt_l1, nt_l2, nt_l3, nt_l4, ga_t, ga_t1, ga_t2, ga_t3, ga_t4, ga_l, ga_l1, ga_l2, ga_l3, ga_l4
+from handlers.scripts.scripts import rlist, remoji
+from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.dispatcher.filters import Text
+
+class Mydialog(StatesGroup):
+    answer = State()
+
+@dp.message_handler(Text(equals=['/back', '🔙 Назад']))
+async def back(message: types.Message):
+    await message.answer('Вы в главном меню', reply_markup=kb.markup)
+
+@dp.message_handler(Text(equals=['/start', '🚀 Главная']))
+async def start_command(message: types.Message):
+    if message.from_user.full_name == 'pijawca':
+        await message.answer(rlist, reply_markup=kb.markup)
+    else:
+        await message.answer(f'Привет, @{message.from_user.full_name}', reply_markup=kb.markup)
+    await message.answer_sticker(remoji)
+
+@dp.message_handler(Text(equals=['/news', '📰 Новости']))
+async def news(message: types.Message):
+    await message.answer(f'В Усть-Илимске сейчас: {time()}\n'
+                         f'Сейчас на улице: {temp()}\n'
+                         f'💧Влажность: {liquid()}, {state()}\n\n'
+                         f'📰 Новости в категории "Интернет" от Яндекса:\n'
+                         f'💌 ' + f'[{nt_t()}]({nt_l()})\n' + '💌 ' + f'[{nt_t1()}]({nt_l1()})\n' + '💌 ' + f'[{nt_t2()}]({nt_l2()})\n'
+                         f'💌 ' + f'[{nt_t3()}]({nt_l3()})\n' + '💌 ' + f'[{nt_t4()}]({nt_l4()})\n\n'
+                         f'📰 Новости в категории "Гаджеты" от Яндекса:\n'
+                         f'💌 ' + f'[{ga_t()}]({ga_l()})\n' + '💌 ' + f'[{ga_t1()}]({ga_l1()})\n' + '💌 ' + f'[{ga_t2()}]({ga_l2()})\n'
+                         f'💌 ' + f'[{ga_t3()}]({ga_l3()})\n' + '💌 ' + f'[{ga_t4()}]({ga_l4()})\n',
+                         parse_mode=types.ParseMode.MARKDOWN, disable_web_page_preview=True)
+    await message.answer_sticker(r'CAACAgIAAxkBAAJlW1_A4-VoKhJ96gh3UVLNP1nu_0sKAAIZAANpZpIpDeTOdrIfxjgeBA')
+
+@dp.message_handler(Text(equals=['/contact', '💕 Написать в ЛС']))
+async def contact(message: types.Message):
+    await message.answer('twitter.com/pijawca',  reply_markup=kb.inline_kb1, disable_web_page_preview=True)
+    await message.answer_sticker(r'CAACAgIAAxkBAAJlWF_A47461dkwiq1m1tnfVgV1-1nlAAIdAANpZpIpYOaCA0HWc1IeBA')
+
+@dp.message_handler(Text(equals=['/bots', '🤖 Боты']))
+async def bots(message: types.Message):
+    await message.answer("[Бот который сливает ваши темы на форуме lolz](https://web.telegram.org/#/im?p=@showmehide)", parse_mode=types.ParseMode.MARKDOWN, disable_web_page_preview=True)
+    await message.answer_sticker(r'CAACAgIAAxkBAAJlYV_A7x4kfm4BqlSNyKDXaPzQAlqfAAIaAANpZpIpEQ3umUssdzseBA', reply_markup=kb.markup)
+
+@dp.message_handler(Text(equals=['/buypass', '💎 Купить подписку', ]))
+async def buy_pass(message: types.Message):
+    await message.answer('Короче, кодер лох, ему лень настраивать автоматическую покупку. \nПоэтому всё будет, но не сразу.', reply_markup=kb.inline_kb2)
+    await message.answer_sticker(r'CAACAgIAAxkBAAJnDF_CjpEIhygPUhmj2kjA3X0p1vjXAAIYAANpZpIpxJSBwpdc_mceBA')
